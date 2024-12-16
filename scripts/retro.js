@@ -26,11 +26,11 @@ const loadPostData = async (props) => {
     const res = await fetch(loadData);
     const data = await res.json();
 
-    allPost(data.posts);
+    displayAllPost(data.posts);
 }
 
 /*To Display all post data */
-const allPost = (posts) => {
+const displayAllPost = (posts) => {
     const allPost = document.getElementById('all-post');
     allPost.innerHTML = '';
     posts.forEach(post => {
