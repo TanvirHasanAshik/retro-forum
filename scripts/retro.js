@@ -79,7 +79,7 @@ const displayLatestPost = async () => {
     posts.forEach(post => {
         const div = document.createElement('div');
         div.innerHTML = `
-            <div id="post-card" class=" card bg-base-100 w-96 shadow-xl">
+            <div id="post-card" class=" card bg-base-100 w-full lg:w-96 shadow-xl">
                 <figure>
                     <img src="${post.cover_image}" alt="" />
                 </figure>
