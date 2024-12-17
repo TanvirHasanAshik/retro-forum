@@ -14,6 +14,10 @@ const messageIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox
   <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.839 2.51-4.66-2.51m0 0-1.023-.55a2.25 2.25 0 0 0-2.134 0l-1.022.55m0 0-4.661 2.51m16.5 1.615a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V8.844a2.25 2.25 0 0 1 1.183-1.981l7.5-4.039a2.25 2.25 0 0 1 2.134 0l7.5 4.039a2.25 2.25 0 0 1 1.183 1.98V19.5Z" />
 </svg>
 `
+const calendar = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
+</svg>
+`
 
 const markReadList = [];
 
@@ -67,6 +71,44 @@ const displayAllPost = (posts) => {
     });
 }
 
+const displayLatestPost = async () => {
+    const url = 'https://openapi.programming-hero.com/api/retro-forum/latest-posts';
+    const res = await fetch(url)
+    const posts = await res.json();
+    const latestPostElement = document.getElementById('latest-post');
+    posts.forEach(post => {
+        const div = document.createElement('div');
+        div.innerHTML = `
+            <div id="post-card" class=" card bg-base-100 w-96 shadow-xl">
+                <figure>
+                    <img src="${post.cover_image}" alt="" />
+                </figure>
+                <div class="card-body">
+                    <h2 class="text-gray-400 text-xl flex gap-2">
+                        ${calendar}
+                        ${post.author.posted_date ? post.author.posted_date : 'No publish date'}
+                    </h2>  
+                    <h2 class="card-title ">${post.title}</h2>
+                    <p>${post.description}</p>
+                    <div class="card-actions">
+                        <div class="w-20 ">
+                            <img class="rounded-full" src="${post.profile_image}" alt="" />
+                        </div>
+                        <div>
+                            <h2 class="font-bold text-xl">${post.author.name}</h2>
+                            <p class="text-gray-400 text-xl flex gap-2">${post.author.designation ? post.author.designation : 'Unknown'}</p>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        `
+        latestPostElement.appendChild(div);
+
+        console.log(post);
+    })
+
+}
+
 const postSeeBtn = async (id) => {
 
     const res = await fetch(`https://openapi.programming-hero.com/api/retro-forum/posts`);
@@ -109,4 +151,4 @@ const loadingSpinner = () => {
 
 
 loadPostData();
-
+displayLatestPost();
